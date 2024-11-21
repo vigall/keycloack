@@ -50,10 +50,10 @@ COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 # Copie os arquivos de configuração do realm e o script de health check para o contêiner
 COPY ./realm-config /opt/keycloak/data/import
-COPY ./realm-config/keycloak-health-check.sh /opt/keycloak/health-check.sh
+#COPY ./realm-config/keycloak-health-check.sh /opt/keycloak/health-check.sh
 
 # Adicione o script de health check como executável
-RUN chmod +x /opt/keycloak/health-check.sh
+#RUN chmod +x /opt/keycloak/health-check.sh
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 # even though we build, using --optimized disallows postgresql databases so we need this workaround https://github.com/keycloak/keycloak/issues/15898
