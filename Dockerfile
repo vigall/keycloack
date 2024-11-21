@@ -39,11 +39,20 @@ ENV KC_DB_URL=jdbc:postgresql://${DB_URL}:${DB_PORT}/${DB_DATABASE}
 EXPOSE 8443
 EXPOSE 8444
 
+# Adicione o script de health check como executável
+RUN chmod +x /opt/keycloak/health-check.sh
+
 # db may seem redundant but it is not
 RUN /opt/keycloak/bin/kc.sh build --db=postgres
+
 FROM quay.io/keycloak/keycloak:latest
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
+
+# Copie os arquivos de configuração do realm e o script de health check para o contêiner
+COPY ./realm-config /opt/keycloak/data/import
+COPY ./realm-config/keycloak-health-check.sh /opt/keycloak/health-check.sh
+
 
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
