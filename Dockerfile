@@ -40,8 +40,9 @@ ENV KC_DB_URL=jdbc:postgresql://${DB_URL}:${DB_PORT}/${DB_DATABASE}
 # Set timezone to Oregon (US West)
 ENV TZ=America/Los_Angeles
 
-# Install tzdata to configure timezone
-RUN apt-get update && apt-get install -y tzdata && \
+# Instalar tzdata usando microdnf
+USER root
+RUN microdnf update -y && microdnf install -y tzdata && \
     ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 
